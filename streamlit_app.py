@@ -34,6 +34,21 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+    .info-banner {
+        background: linear-gradient(135deg, #ffe6e6, #fff5f5);
+        padding: 18px;
+        border-radius: 12px;
+        border-left: 6px solid #ff0000;
+        font-size: 1.05em;
+        color: #333;
+        margin-top: 10px;
+        margin-bottom: 25px;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+    }
+</style>
+""", unsafe_allow_html=True)
 
 st.markdown('<div class="main-title">Cancer Risk Prediction Dashboard</div>', unsafe_allow_html=True)
 st.markdown('<div class="subtitle">Compare multiple ML models for cancer risk assessment</div>', unsafe_allow_html=True)
