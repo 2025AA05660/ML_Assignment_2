@@ -117,8 +117,17 @@ MODELS = {
 
 uploaded_file = st.file_uploader("Upload test CSV file", type=["csv"])
 
-if uploaded_file:
+try:
     data = pd.read_csv(uploaded_file)
+except:
+    try:
+        data = pd.read_csv(uploaded_file, sep=';')
+    except:
+        try:
+            data = pd.read_csv(uploaded_file, encoding='latin1')
+        except Exception as e:
+            st.error("Unable to read the uploaded CSV. Please upload a valid file.")
+            st.stop()
     TARGET_COLUMN = "Cancer_Type"
 
     columns_to_drop = [TARGET_COLUMN]
@@ -191,4 +200,5 @@ if uploaded_file:
     ax.set_xlabel("Predicted")
     ax.set_ylabel("Actual")
     st.pyplot(fig)
+
 
