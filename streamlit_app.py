@@ -115,19 +115,31 @@ MODELS = {
     "XGBoost": "model/xgboost.pkl"
 }
 
+def load_csv(uploaded_file):
+    try:
+        return pd.read_csv(uploaded_file)
+    except:
+        uploaded_file.seek(0)
+        try:
+            return pd.read_csv(uploaded_file, sep=';')
+        except:
+            uploaded_file.seek(0)
+            try:
+                return pd.read_csv(uploaded_file, sep='\t')
+            except:
+                uploaded_file.seek(0)
+                try:
+                    return pd.read_csv(uploaded_file, encoding='latin1')
+                except Exception as e:
+                    st.error("CSV could not be read. Please re-download the sample CSV from this app and upload it without editing in Excel.")
+                    st.stop()
 uploaded_file = st.file_uploader("Upload test CSV file", type=["csv"])
 
-try:
-    data = pd.read_csv(uploaded_file)
-except:
-    try:
-        data = pd.read_csv(uploaded_file, sep=';')
-    except:
-        try:
-            data = pd.read_csv(uploaded_file, encoding='latin1')
-        except Exception as e:
-            st.error("Unable to read the uploaded CSV. Please upload a valid file.")
-            st.stop()
+if uploaded_file:
+    data = load_csv(uploaded_file)
+    st.success("CSV loaded successfully")
+    st.dataframe(data.head())
+    
     TARGET_COLUMN = "Cancer_Type"
 
     columns_to_drop = [TARGET_COLUMN]
@@ -200,5 +212,6 @@ except:
     ax.set_xlabel("Predicted")
     ax.set_ylabel("Actual")
     st.pyplot(fig)
+
 
 
