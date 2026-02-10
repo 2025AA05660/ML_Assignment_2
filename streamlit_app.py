@@ -1,0 +1,102 @@
+import streamlit as st
+import pandas as pd
+import joblib
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import (
+    accuracy_score, precision_score, recall_score,
+    f1_score, roc_auc_score, matthews_corrcoef,
+    confusion_matrix, classification_report
+)
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+st.set_page_config(page_title="StreamLit", layout="wide")
+st.title("1. Upload Test Dataset")
+
+MODELS = {
+    "Logistic Regression": "model/logistic.pkl",
+    "Decision Tree": "model/decision_tree.pkl",
+    "KNN": "model/knn.pkl",
+    "Naive Bayes": "model/naive_bayes.pkl",
+    "Random Forest": "model/random_forest.pkl",
+    "XGBoost": "model/xgboost.pkl"
+}
+
+uploaded_file = st.file_uploader("Upload test CSV file", type=["csv"])
+
+if uploaded_file:
+    data = pd.read_csv(uploaded_file)
+    TARGET_COLUMN = "Cancer_Type"
+
+    columns_to_drop = [TARGET_COLUMN]
+    if 'Patient_ID' in data.columns:
+        columns_to_drop.append('Patient_ID')
+    if 'Risk_Level' in data.columns:
+        columns_to_drop.append('Risk_Level')
+    
+    X = data.drop(columns=columns_to_drop, errors='ignore') 
+    y_true_original_dtype = data[TARGET_COLUMN].dtype 
+    y_true = data[TARGET_COLUMN]
+
+    if y_true_original_dtype == "object":
+        y_true = y_true.astype("category").cat.codes 
+
+    st.subheader("Step 2: Select Model to Evaluate") 
+    
+    model_name = st.selectbox("Select Model", list(MODELS.keys()))
+    model = joblib.load(MODELS[model_name])
+
+    if model_name in ["Logistic Regression", "KNN"]:
+        scaler = StandardScaler()
+        X_input = scaler.fit_transform(X)
+    else:
+        X_input = X.values
+
+    y_pred = model.predict(X_input)
+
+    try:
+        y_prob = model.predict_proba(X_input)
+        if y_prob.shape[1] > 2:
+            y_prob_for_auc = y_prob
+        else:
+            y_prob_for_auc = y_prob[:, 1]
+    except AttributeError:
+        st.warning("Model does not support predict_proba, AUC will not be calculated.")
+        y_prob_for_auc = None
+
+    st.subheader("Evaluation Metrics")
+    metrics = {
+        "Accuracy": accuracy_score(y_true, y_pred),
+        "Precision": precision_score(y_true, y_pred, average='weighted'),
+        "Recall": recall_score(y_true, y_pred, average='weighted'),
+        "F1": f1_score(y_true, y_pred, average='weighted'),
+        "MCC": matthews_corrcoef(y_true, y_pred)
+    }
+    if y_prob_for_auc is not None:
+        if y_prob_for_auc.ndim == 2 and y_prob_for_auc.shape[1] > 2:
+            metrics["AUC"] = roc_auc_score(y_true, y_prob_for_auc, multi_class='ovr', average='weighted')
+        elif y_prob_for_auc.ndim == 1 or (y_prob_for_auc.ndim == 2 and y_prob_for_auc.shape[1] == 2):
+            metrics["AUC"] = roc_auc_score(y_true, y_prob_for_auc)
+        else:
+            metrics["AUC"] = "N/A"
+    else:
+        metrics["AUC"] = "N/A"
+
+    cols = st.columns(len(metrics))
+    for i, (metric_name, value) in enumerate(metrics.items()):
+        with cols[i]:
+            if isinstance(value, (int, float)):
+                st.markdown(f"**:red[{metric_name}]**"+f"<h1 style='font-size:40px; color:blue'>{value:.4f}</h1>", unsafe_allow_html=True)
+            else:
+                st.markdown(f"**:green[{metric_name}]**"+f"<h1 style='font-size:40px; color:yellow'>{value}</h1>", unsafe_allow_html=True)
+
+    st.subheader("Confusion Matrix")
+    cm = confusion_matrix(y_true, y_pred)
+
+    fig, ax = plt.subplots()
+    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", ax=ax)
+    ax.set_xlabel("Predicted")
+    ax.set_ylabel("Actual")
+    st.pyplot(fig)
