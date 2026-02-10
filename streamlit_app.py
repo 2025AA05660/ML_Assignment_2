@@ -11,16 +11,39 @@ from sklearn.metrics import (
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-st.markdown('<p class="main-title">Cancer Risk Factors Classification</p>', unsafe_allow_html=True)
-st.markdown('<p class="subtitle"> Machine Learning Classification models and Evaluation metrics Dashboard </p>', unsafe_allow_html=True)
+# Set page config
+st.set_page_config(page_title="Machine Learning Assignment 2 - Cancer Risk Prediction Dashboard", layout="wide")
+
+st.markdown("""
+<style>
+    .main-title {
+        text-align: center;
+        color: #ff0000;   /* Red color */
+        font-size: 3.5em;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #444;
+        font-size: 1.5em;
+        font-style: italic;   /* Italic subtitle */
+        margin-bottom: 25px;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+
+st.markdown('<div class="main-title">Cancer Risk Prediction Dashboard</div>', unsafe_allow_html=True)
+st.markdown('<div class="subtitle">Compare multiple ML models for cancer risk assessment</div>', unsafe_allow_html=True)
 
 st.markdown("""
 <div class="info-box">
-    <strong>Hi, Welcome! !</strong> This dashboard allows users to upload patient risk-factor data and compare predictions from multiple machine-learning models to estimate cancer risk. It provides model performance metrics and visual evaluation to support interpretable, data-driven risk assessment.
+Upload a test CSV, choose a model, and view predictions with evaluation metrics.
+This dashboard demonstrates multiple classification algorithms trained on cancer risk factors.
 </div>
 """, unsafe_allow_html=True)
-
-st.set_page_config(page_title="Machine Learning Assignment 2", layout="wide")
 
 # Upload Test Data
 st.markdown('<h2 class="section-header">Step 1: Upload Test Dataset</h2>', unsafe_allow_html=True)
