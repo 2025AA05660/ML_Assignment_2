@@ -34,6 +34,9 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown('<div class="main-title">Cancer Risk Prediction Dashboard</div>', unsafe_allow_html=True)
+st.markdown('<div class="subtitle">Compare multiple ML models for cancer risk assessment</div>', unsafe_allow_html=True)
+
 st.markdown("""
 <style>
     .info-banner {
@@ -49,9 +52,6 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
-
-st.markdown('<div class="main-title">Cancer Risk Prediction Dashboard</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitle">Compare multiple ML models for cancer risk assessment</div>', unsafe_allow_html=True)
 
 st.markdown("""
 <div class="info-box">
