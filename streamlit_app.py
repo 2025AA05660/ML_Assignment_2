@@ -11,9 +11,40 @@ from sklearn.metrics import (
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+st.markdown('<p class="main-title">Cancer Risk Factors Classification</p>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle"> Machine Learning Classification models and Evaluation metrics Dashboard </p>', unsafe_allow_html=True)
 
-st.set_page_config(page_title="StreamLit", layout="wide")
-st.title("1. Upload Test Dataset")
+st.markdown("""
+<div class="info-box">
+    <strong>Hi, Welcome! !</strong> This dashboard allows users to upload patient risk-factor data and compare predictions from multiple machine-learning models to estimate cancer risk. It provides model performance metrics and visual evaluation to support interpretable, data-driven risk assessment.
+</div>
+""", unsafe_allow_html=True)
+
+st.set_page_config(page_title="Machine Learning Assignment 2", layout="wide")
+
+# Upload Test Data
+st.markdown('<h2 class="section-header">Step 1: Upload Test Dataset</h2>', unsafe_allow_html=True)
+
+# Download button for test dataset
+@st.cache_data
+def fetch_test_csv():
+    import requests
+    url = "https://github.com/2025AA05660/ML_Assignment_2/blob/main/cancer-risk-test.csv"
+    response = requests.get(url)
+    response.raise_for_status()
+    return response.content
+
+try:
+    test_csv_data = fetch_test_csv()
+    st.markdown("You can download the test dataset here:")
+    st.download_button(
+        label="Download cancer-risk-test.csv",
+        data=test_csv_data,
+        file_name="cancer-risk-test.csv",
+        mime="text/csv"
+    )
+except Exception:
+    st.info("Could not fetch the test dataset from GitHub. Please download it manually from: https://github.com/2025AB05088/ML_Assignment_2/blob/main/steel_faults_test.csv")
 
 MODELS = {
     "Logistic Regression": "model/logistic.pkl",
