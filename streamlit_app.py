@@ -31,17 +31,28 @@ st.markdown("""
         font-style: italic;   /* Italic subtitle */
         margin-bottom: 25px;
     }
-.info-banner {
-    background-color: #1e1e1e;   /* dark card background */
-    padding: 20px;
-    border-radius: 12px;
-    border-left: 6px solid #ff0000;
-    color: white;
-    font-size: 16px;
-    margin-top: 15px;
-    margin-bottom: 25px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-}
+.info-box {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 20px;
+        border-radius: 10px;
+        color: white;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .metric-card {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid #1f77b4;
+        margin: 10px 0;
+    }
+    .section-header {
+        color: #2c3e50;
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 10px;
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
 </style>
 """, unsafe_allow_html=True)
 
