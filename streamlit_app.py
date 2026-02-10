@@ -31,6 +31,17 @@ st.markdown("""
         font-style: italic;   /* Italic subtitle */
         margin-bottom: 25px;
     }
+.info-banner {
+    background-color: #1e1e1e;   /* dark card background */
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 6px solid #ff0000;
+    color: white;
+    font-size: 16px;
+    margin-top: 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
 </style>
 """, unsafe_allow_html=True)
 
