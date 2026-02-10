@@ -140,7 +140,15 @@ if uploaded_file:
     st.success("CSV loaded successfully")
     st.dataframe(data.head())
     
-    TARGET_COLUMN = "Cancer_Type"
+   TARGET_COLUMN = "Cancer_Type" 
+
+if TARGET_COLUMN in data.columns:
+    y_true = data[TARGET_COLUMN]
+    X_input = data.drop(TARGET_COLUMN, axis=1)
+    has_target = True
+else:
+    X_input = data.copy()
+    has_target = False
 
     columns_to_drop = [TARGET_COLUMN]
     if 'Patient_ID' in data.columns:
@@ -212,6 +220,7 @@ if uploaded_file:
     ax.set_xlabel("Predicted")
     ax.set_ylabel("Actual")
     st.pyplot(fig)
+
 
 
 
