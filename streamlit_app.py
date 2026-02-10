@@ -77,7 +77,7 @@ st.markdown("""
 
 st.markdown("""
 <div class="info-box">
-Upload a test CSV, choose a model, and view predictions with evaluation metrics.
+Hi, Welcome! Upload test CSV, choose a model and view predictions with evaluation metrics.
 This dashboard demonstrates multiple classification algorithms trained on cancer risk factors.
 </div>
 """, unsafe_allow_html=True)
@@ -191,3 +191,4 @@ if uploaded_file:
     ax.set_xlabel("Predicted")
     ax.set_ylabel("Actual")
     st.pyplot(fig)
+
